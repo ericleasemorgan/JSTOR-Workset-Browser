@@ -9,7 +9,7 @@
 # configure
 use constant COOKIES => './cookies.txt';
 use constant JSTOR   => '10.2307/';
-use constant MAXIMUM => 50;
+use constant MAXIMUM => 100;
 use constant CACHE   => '/pdf';
 use constant PDFPLUS => 'http://www.jstor.org/stable/pdfplus/##JSTORID##.pdf?acceptTC=true';
 
@@ -62,16 +62,21 @@ foreach my $citation ( $citations->get_nodelist ) {
 	print "    PDF: $pdf\n";
 	print "\n";
 
-	# increment
-	$index++;
-	last if ( $index > MAXIMUM );
+	# get the PDF file, if necessary
+	if ( ! -e $pdf ) {
 	
-	# get and save the remote pdf file
-	my $request  = HTTP::Request->new( 'GET', $url );
-	my $response = $ua->request( $request );
-	open PDF, " > $pdf";
-	print PDF $response->content;
-	close PDF;
+		# get and save the remote pdf file
+		my $request  = HTTP::Request->new( 'GET', $url );
+		my $response = $ua->request( $request );
+		open PDF, " > $pdf";
+		print PDF $response->content;
+		close PDF;
+	
+		# increment
+		$index++;
+		last if ( $index > MAXIMUM );
+
+	}
 
 }
 

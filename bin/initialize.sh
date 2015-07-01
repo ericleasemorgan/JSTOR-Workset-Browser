@@ -22,6 +22,7 @@ mkdir $NAME
 mkdir $NAME/pdf
 mkdir $NAME/text
 mkdir $NAME/index
+mkdir $NAME/graphs
 
 # done
 exit 0

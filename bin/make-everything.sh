@@ -37,6 +37,19 @@ echo "making dictionary"
 echo "extracting unique words"
 cat $NAME/dictionary.db | ./bin/make-unique.py  > $NAME/unique.db
 
+# stage #4 - create sorted numeric reports
+echo "creating numeric reports"
+./bin/calculate-size.sh   $NAME                      | sort -k2 -n -r > $NAME/sizes.db
+./bin/calculate-themes.sh $NAME etc/theme-colors.txt | sort -k2 -g -r > $NAME/calculated-colors.db
+./bin/calculate-themes.sh $NAME etc/theme-names.txt  | sort -k2 -g -r > $NAME/calculated-names.db
+./bin/calculate-themes.sh $NAME etc/theme-ideas.txt  | sort -k2 -g -r > $NAME/calculated-ideas.db
+
+# create reports, sorted by coefficient: colors, names, ideas
+echo "calculating themes"
+./bin/calculate-themes.py -v $NAME/dictionary.db etc/theme-colors.txt > $NAME/dictionary-colors.db
+./bin/calculate-themes.py -v $NAME/dictionary.db etc/theme-names.txt  > $NAME/dictionary-names.db
+./bin/calculate-themes.py -v $NAME/dictionary.db etc/theme-ideas.txt  > $NAME/dictionary-ideas.db
+
 # done
 echo "Done"
 exit 0
