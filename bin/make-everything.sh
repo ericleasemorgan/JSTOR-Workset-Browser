@@ -4,6 +4,8 @@
 
 # Eric Lease Morgan <emorgan@nd.edu>
 # June 30, 2015 - first cut; based on EEBO-TCP work
+# July  9, 2015 - added make graphs
+
 
 # get input
 NAME=$1
@@ -22,7 +24,7 @@ echo "initializing directory structure"
 
 # state #1 - build corpus
 echo "building corpus"
-cat /dev/stdin | ./bin/harvest.pl $NAME
+cat /dev/stdin | ./bin/make-corpus.pl $NAME
 ./bin/transform-pdf2text.sh $NAME
 
 # stage #2 - create the index
@@ -49,6 +51,10 @@ echo "calculating themes"
 ./bin/calculate-themes.py -v $NAME/dictionary.db etc/theme-colors.txt > $NAME/dictionary-colors.db
 ./bin/calculate-themes.py -v $NAME/dictionary.db etc/theme-names.txt  > $NAME/dictionary-names.db
 ./bin/calculate-themes.py -v $NAME/dictionary.db etc/theme-ideas.txt  > $NAME/dictionary-ideas.db
+
+# make graphs
+echo "making graphs"
+./bin/make-graphs.sh $NAME
 
 # done
 echo "Done"

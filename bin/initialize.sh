@@ -4,6 +4,7 @@
 
 # Eric Lease Morgan <emorgan@nd.edu>
 # June 30, 2015 - first cut
+# July  9, 2015 - made pdf and text directories readable only by me; can you say "copyright"?
 
 
 # get input
@@ -20,7 +21,9 @@ fi
 # do the work
 mkdir $NAME
 mkdir $NAME/pdf
+chmod 700 $NAME/pdf
 mkdir $NAME/text
+chmod 700 $NAME/text
 mkdir $NAME/index
 mkdir $NAME/graphs
 

@@ -4,6 +4,7 @@
 
 # Eric Lease Morgan <emorgan@nd.edu>
 # June 30, 2015 - based on previous work (https://gist.github.com/ericleasemorgan/c4e34ffad96c0221f1ff)
+# July  9, 2015 - checked for existence of file before processing; faster and more efficient
 
 
 # configure
@@ -42,7 +43,7 @@ do
 	
 	# do the work
 	echo $FILE
-	nc $HOST $PORT < $FILE > $TEXTFILE
+	if [ ! -e $TEXTFILE ]; then nc $HOST $PORT < $FILE > $TEXTFILE; fi
 	
 done
 
