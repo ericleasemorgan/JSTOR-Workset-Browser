@@ -26,8 +26,8 @@ echo "graphing clusters"
 echo "graphing wordclouds"
 ./bin/graph-wordcloud.R $NAME
 
-#echo "graphing catalog"
-#./bin/graph-catalog.R $NAME
+echo "graphing catalog"
+./bin/graph-catalog.R $NAME
 
 # done
 exit 0

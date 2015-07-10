@@ -3,16 +3,20 @@
 # make-catalog.py - create a "catalog" from a DFR JSTOR dataset citations.xml file
 
 # Eric Lease Morgan <emorgan@nd.edu>
-# July 4, 2015 - first investigations
+# July  4, 2015 - first investigations
+# July  9, 2015 - first real output
+# July 10, 2015 - lost timezone in pubdate, and created a year
 
 
 # configure
 DEBUG     = 0
 CITATIONS = '/citations.xml'
+PDFPLUS   = 'http://www.jstor.org/stable/pdfplus/##JSTORID##.pdf?acceptTC=true'
 
 # require
 import sys
 import libxml2
+import re
 
 # sanity check
 if len( sys.argv ) != 2 :
@@ -30,7 +34,7 @@ articles = citations.xpathEval( '//article')
 for article in articles :
 
 	# parse
-	id           = article.xpathEval( './@id' )
+	fkey         = article.xpathEval( './@id' )
 	title        = article.xpathEval( 'title/text()' )
 	author       = article.xpathEval( 'author/text()' )
 	journaltitle = article.xpathEval( 'journaltitle/text()' )
@@ -44,8 +48,8 @@ for article in articles :
 	abstract     = article.xpathEval( 'abstract/text()' )
 
 	# check and stringify
-	if id : id = id[ 0 ].content
-	else: id = ''
+	if fkey : fkey = fkey[ 0 ].content
+	else: fkey = ''
 	
 	if title : title = title[ 0 ].content
 	else: title = ''
@@ -79,21 +83,43 @@ for article in articles :
 	
 	if abstract : abstract = abstract[ 0 ].content
 	else : abstract = ''
+		
+	# create a URL to the PDF document
+	pdf = re.sub( '##JSTORID##', fkey, PDFPLUS )
 	
+	# create a local key akin to the locally saved pdf file names
+	id = re.sub( '\.', '_' , fkey )
+	id = re.sub( '\/', '-' , id )
 	
-	print "             id : " + id
-	print "          title : " + title
-	print "         author : " + author
-	print "  journal title : " + journaltitle
-	print "         volume : " + volume
-	print "          issue : " + issue
-	print "        pubdate : " + pubdate
-	print "      pagerange : " + pagerange
-	print "      publisher : " + publisher
-	print "           type : " + type
-	print "  reviewed work : " + reviewedwork
-	print "       abstract : " + abstract
-	print
+	# munge the pubdate; we don't need timezones
+	pubdate = pubdate[:10]
+
+	# create a year, because all of my other sets use year
+	year = pubdate[:4]
+
+	# debug
+	if DEBUG :
+
+		print "             id : " + id
+		print "           fkey : " + fkey
+		print "          title : " + title
+		print "         author : " + author
+		print "  journal title : " + journaltitle
+		print "         volume : " + volume
+		print "          issue : " + issue
+		print "        pubdate : " + pubdate
+		print "           year : " + year
+		print "      pagerange : " + pagerange
+		print "      publisher : " + publisher
+		print "           type : " + type
+		print "  reviewed work : " + reviewedwork
+		print "       abstract : " + abstract
+		print "            PDF : " + pdf
+		print
 	
+	# or not; output
+	else : print( '\t'.join( map( str, [ id, fkey, title, author, journaltitle, volume, issue, year, pubdate, pagerange, publisher, type, reviewedwork, abstract, pdf ] ) ) )
+
+# done
 quit()
 

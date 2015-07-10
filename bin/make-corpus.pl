@@ -5,12 +5,14 @@
 # Eric Lease Morgan <emorgan@nd.edu>
 # June 30, 2015 - first cut; based on jstor-tool; think about GMCC and hiding a flower
 # July  6, 2015 - cached STDIN to citations.xml for later processing
-# July  9, 2015 - removed the removal of the doi prefix; learned how to harvest everything
+# July  9, 2015 - removed the removal of the doi prefix; added user-agent identifiers
 
 
 # configure
+use constant FROM      => 'emorgan@nd.edu';
+use constant AGENT     => 'JSTOR-Workset-Browser/0.1 ';
 use constant COOKIES   => './cookies.txt';
-use constant MAXIMUM   => 100;
+use constant MAXIMUM   => 1000;
 use constant CACHE     => '/pdf';
 use constant PDFPLUS   => 'http://www.jstor.org/stable/pdfplus/##JSTORID##.pdf?acceptTC=true';
 use constant CITATIONS => '/citations.xml';
@@ -38,8 +40,10 @@ print XML $citations;
 close XML;
 
 # continue initialization
-my $parser    = XML::XPath->new( xml => $citations );
-my $ua        = LWP::UserAgent->new;
+my $parser  = XML::XPath->new( xml => $citations );
+my $ua      = LWP::UserAgent->new;
+$ua->agent( AGENT );
+$ua->from( FROM );
 $ua->cookie_jar( { file => COOKIES } );
 binmode( STDOUT, ':utf8' );
 
@@ -66,6 +70,7 @@ foreach my $citation ( $citations->get_nodelist ) {
 	if ( length( $citation->find( './title' ))) { $title = $citation->find( './title' ) }
 
 	# echo
+	print "  index: $index\n";
 	print "     id: $id\n";
 	print "  title: $title\n";
 	print "    url: $url\n";
