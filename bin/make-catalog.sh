@@ -43,8 +43,8 @@ echo "adding header to catalog"
 printf "ids\tfkeys\ttitles\tauthors\tjournaltitltes\tvolumes\tissues\tyears\tpubdates\tpageranges\tpublishers\ttypes\treveiwedworks\tabstracts\tpdfs\tpages\tsizes\tcolors\tnames\tideas\n" | cat - $NAME/catalog.db > $NAME/catalog.tmp; mv $NAME/catalog.tmp $NAME/catalog.db
 
 # make the human-readable version
-#echo "transforming catalog.db into catalog.html"
-#./bin/transform-catalog2html.py $NAME > $NAME/catalog.html
+echo "transforming catalog.db into catalog.html"
+./bin/transform-catalog2html.py $NAME > $NAME/catalog.html
 
 # make the search engine, as it may be, available
 #echo "adding search interface"

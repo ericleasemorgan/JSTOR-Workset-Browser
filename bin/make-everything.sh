@@ -39,6 +39,10 @@ echo "making dictionary"
 echo "extracting unique words"
 cat $NAME/dictionary.db | ./bin/make-unique.py  > $NAME/unique.db
 
+# stage #3 - create the catalog
+echo "building catalog"
+./bin/make-catalog.sh $NAME
+
 # stage #4 - create sorted numeric reports
 echo "creating numeric reports"
 ./bin/calculate-size.sh   $NAME                      | sort -k2 -n -r > $NAME/sizes.db
