@@ -60,6 +60,11 @@ echo "calculating themes"
 echo "making graphs"
 ./bin/make-graphs.sh $NAME
 
+# state 5 - analyze corpus and create pretty about page
+echo "making about page"
+./bin/make-about.sh $NAME > $NAME/about.db
+./bin/transform-about2html.py $NAME > $NAME/about.html
+
 # done
 echo "Done"
 exit 0

@@ -47,9 +47,9 @@ echo "transforming catalog.db into catalog.html"
 ./bin/transform-catalog2html.py $NAME > $NAME/catalog.html
 
 # make the search engine, as it may be, available
-#echo "adding search interface"
-#cp ./etc/search.cgi $NAME
-#chmod +x $NAME/search.cgi
+echo "adding search interface"
+cp ./etc/search.cgi $NAME
+chmod +x $NAME/search.cgi
 
 # done
 echo "done making catalog"
