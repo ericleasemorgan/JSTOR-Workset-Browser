@@ -4,7 +4,7 @@
 
 <h1><img align='right' src="./graphs/wordcloud-frequency.png" />##CORPUSNAME##</h1>
 
-<p>This page describes a corpus named ##CORPUSNAME##.</p>
+<p>This page describes a corpus named ##CORPUSNAME## as created by a tool called the <a href="https://github.com/ericleasemorgan/JSTOR-Workset-Browser">JSTOR Workset Browser</a>.</p>
 
 <h2>General statistics</h2>
 
